@@ -36,6 +36,16 @@ type file struct {
 	fileForWriting *os.File
 }
 
+func (f *file) isHiddenFile() (bool, error) {
+	if info, err := os.Stat(f.fileForReading.Name()); err != nil {
+		return false, err
+	} else if strings.HasPrefix(info.Name(), ".") {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}
+
 func (f *file) rename(ext string) error {
 	org := f.fileForReading.Name()
 	newFileName := strings.Split(org, ".")[0] + ext

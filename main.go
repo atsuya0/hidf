@@ -36,6 +36,13 @@ func main() {
 		fileForReading: fileForReading,
 	}
 
+	if bool, err := file.isHiddenFile(); err != nil {
+		log.Fatalln(err)
+	} else if bool {
+		fmt.Println("The hidden file is not supported.")
+		return
+	}
+
 	tmp, err := os.Create(file.generateRandFilePath())
 	if err != nil {
 		log.Fatalln(err)
