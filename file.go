@@ -38,8 +38,7 @@ type file struct {
 
 func (f *file) rename(ext string) error {
 	org := f.fileForReading.Name()
-	strings := strings.Split(org, ".")
-	newFileName := strings[len(strings)] + ext
+	newFileName := strings.Split(org, ".")[0] + ext
 	tmpFileName := generateRandString(10)
 	if err := os.Rename(f.fileForReading.Name(), tmpFileName); err != nil {
 		return err
