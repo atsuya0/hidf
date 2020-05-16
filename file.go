@@ -91,7 +91,7 @@ func (f *file) isPng() (bool, error) {
 func (f *file) isRead() (bool, error) {
 	overflowingData := make([]byte, 1)
 	if n, _ := f.fileForReading.Read(overflowingData); n != 0 {
-		_, err := f.fileForReading.Seek(-int64(n), 1)
+		_, err := f.fileForReading.Seek(-int64(n), os.SEEK_CUR)
 		return true, err
 	}
 	return false, nil
@@ -175,7 +175,7 @@ func (f *file) hide() error {
 	img := getRandomImg()
 	png.Encode(f.fileForWriting, img)
 	f.embedExtension()
-	f.fileForReading.Seek(0, 0)
+	f.fileForReading.Seek(0, os.SEEK_SET)
 	if _, err := io.Copy(f.fileForWriting, f.fileForReading); err != nil {
 		return err
 	}
